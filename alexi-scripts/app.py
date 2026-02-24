@@ -1,6 +1,9 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 import threading
+from pymongo import MongoClient  # MongoDB ke liye import
+from datetime import datetime
+
 try:
     # Prefer the face_detection module inside the face_detection/ folder
     from face_detection.face_detection import FaceRecognitionSystem
@@ -12,9 +15,29 @@ from mimi_llm_session import MimiLLMSession
 app = Flask(__name__)
 CORS(app) 
 
+# ==========================================
+# MONGODB CONNECTION SETUP
+# ==========================================
+# 'AlexiDB' database ka naam hai aur 'attendance' collection ka
+client = MongoClient("mongodb://localhost:27017/")
+db = client["AlexiDB"]
+attendance_collection = db["attendance"]
+
 # System initialize karein
 system = FaceRecognitionSystem()
 mimi_system = MimiLLMSession()
+
+@app.route('/get-attendance-logs', methods=['GET'])
+def get_attendance_logs():
+    try:
+        # MongoDB se saara data nikalna (latest records pehle)
+        logs = list(attendance_collection.find({}, {"_id": 0}).sort("date", -1))
+        return jsonify({
+            "status": "success",
+            "data": logs
+        })
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 @app.route('/start-classroom', methods=['GET'])
 def start_classroom():
