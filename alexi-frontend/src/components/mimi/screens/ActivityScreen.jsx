@@ -4,7 +4,7 @@ import MimiCharacter from '../MimiCharacter';
 import MimiDialogue from '../MimiDialogue';
 import { ListeningIndicator, ProgressBar } from '../ui-elements';
 
-const ActivityScreen = ({ 
+const ActivityScreen = ({
   activityData = {
     prompt: "Can you say 'Apple' for me?",
     itemImage: null,
@@ -23,16 +23,16 @@ const ActivityScreen = ({
 
   return (
     <div className="relative w-full h-screen">
-      
+
       {/* Progress Bar */}
       <div className="absolute top-8 left-1/2 -translate-x-1/2 w-full max-w-xl px-4 z-30">
-        <ProgressBar 
-          current={currentActivity} 
+        <ProgressBar
+          current={currentActivity}
           total={totalActivities}
           size="lg"
         />
       </div>
-      
+
       {/* Mimi Character - positioned left */}
       <div className="absolute left-[10%] top-1/2 -translate-y-1/2 z-20">
         <MimiCharacter
@@ -41,7 +41,6 @@ const ActivityScreen = ({
           position="center"
           size="medium"
         />
-        
         {/* Mimi's question */}
         <div className="absolute top-0 left-full ml-8 w-96">
           <MimiDialogue
@@ -50,10 +49,10 @@ const ActivityScreen = ({
           />
         </div>
       </div>
-      
+
       {/* Content Area - Right side */}
       <div className="absolute right-[15%] top-1/2 -translate-y-1/2 flex flex-col items-center gap-8">
-        
+
         {/* Item Image */}
         {activityData.itemImage && (
           <motion.div
@@ -62,17 +61,17 @@ const ActivityScreen = ({
             transition={{ type: "spring", duration: 0.8 }}
             className="w-80 h-80 bg-white rounded-3xl shadow-2xl flex items-center justify-center p-8"
           >
-            <img 
-              src={activityData.itemImage} 
+            <img
+              src={activityData.itemImage}
               alt={activityData.itemName}
               className="w-full h-full object-contain"
               onError={(e) => {
-                e.target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="%23ff6b9d"/><text x="100" y="120" font-size="80" text-anchor="middle" fill="white">🍎</text></svg>';
+                e.target.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">📷</text></svg>';
               }}
             />
           </motion.div>
         )}
-        
+
         {/* Letter Display */}
         {activityData.letter && (
           <motion.div
@@ -84,7 +83,7 @@ const ActivityScreen = ({
             {activityData.letter}
           </motion.div>
         )}
-        
+
         {/* Item Name */}
         {activityData.itemName && (
           <motion.div
@@ -97,26 +96,27 @@ const ActivityScreen = ({
           </motion.div>
         )}
       </div>
-      
+
       {/* Listening Indicator */}
       <AnimatePresence>
         {isListening && <ListeningIndicator />}
       </AnimatePresence>
-      
+
       {/* Decorative sparkles */}
       <motion.div
         className="absolute top-[20%] right-[10%] text-6xl"
-        animate={{ 
+        animate={{
           rotate: 360,
           scale: [1, 1.2, 1]
         }}
-        transition={{ 
-          duration: 3, 
-          repeat: Infinity 
+        transition={{
+          duration: 3,
+          repeat: Infinity
         }}
       >
         ✨
       </motion.div>
+
     </div>
   );
 };
